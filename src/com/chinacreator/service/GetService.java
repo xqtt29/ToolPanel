@@ -41,6 +41,8 @@ public class GetService {
 		try {
 			SslUtils.ignoreSsl();
 			String encode="UTF-8";
+			url = new URL(strUrl+(inputParam!=null&&inputParam.length()!=0?("?"+inputParam):""));
+			connection = (HttpURLConnection) url.openConnection();
 			if(properties!=null&&properties.length()!=0){
 				String[] props=properties.split("\\(#\\_#\\)");
 				for(String prop : props){
@@ -49,14 +51,6 @@ public class GetService {
 						encode=temps[1];
 						break;
 					}
-				}
-			}
-			url = new URL(strUrl+(inputParam!=null&&inputParam.length()!=0?("?"+URLEncoder.encode(inputParam,encode)):""));
-			connection = (HttpURLConnection) url.openConnection();
-			if(properties!=null&&properties.length()!=0){
-				String[] props=properties.split("\\(#\\_#\\)");
-				for(String prop : props){
-					String[] temps=prop.split("\\(&\\_&\\)");
 					connection.setRequestProperty(temps[0], temps[1]);
 				}
 			}
