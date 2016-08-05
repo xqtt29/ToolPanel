@@ -60,7 +60,6 @@ public class GetService {
 					connection.setRequestProperty(temps[0], temps[1]);
 				}
 			}
-			System.out.println(connection.getRequestProperties());
 			connection.connect();
             Map<String, List<String>> map = connection.getHeaderFields();
             String fileType=map.get("Content-Type")==null?"":map.get("Content-Type").toString();
