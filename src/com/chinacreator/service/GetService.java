@@ -42,9 +42,9 @@ public class GetService {
 			SslUtils.ignoreSsl();
 			String encode="UTF-8";
 			if(properties!=null&&properties.length()!=0){
-				String[] props=properties.split("(#_#)");
+				String[] props=properties.split("\\(#\\_#\\)");
 				for(String prop : props){
-					String[] temps=prop.split("=");
+					String[] temps=prop.split("\\(&\\_&\\)");
 					if("Content-Encoding".equals(temps[0])){
 						encode=temps[1];
 						break;
@@ -54,12 +54,13 @@ public class GetService {
 			url = new URL(strUrl+(inputParam!=null&&inputParam.length()!=0?("?"+URLEncoder.encode(inputParam,encode)):""));
 			connection = (HttpURLConnection) url.openConnection();
 			if(properties!=null&&properties.length()!=0){
-				String[] props=properties.split("(#_#)");
+				String[] props=properties.split("\\(#\\_#\\)");
 				for(String prop : props){
-					String[] temps=prop.split("(&_&)");
+					String[] temps=prop.split("\\(&\\_&\\)");
 					connection.setRequestProperty(temps[0], temps[1]);
 				}
 			}
+			System.out.println(connection.getRequestProperties());
 			connection.connect();
             Map<String, List<String>> map = connection.getHeaderFields();
             String fileType=map.get("Content-Type")==null?"":map.get("Content-Type").toString();

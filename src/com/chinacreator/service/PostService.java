@@ -46,9 +46,9 @@ public class PostService {
 			connection.setDoInput(true);
 			String encode="UTF-8";
 			if(properties!=null&&properties.length()!=0){
-				String[] props=properties.split("(#_#)");
+				String[] props=properties.split("\\(#\\_#\\)");
 				for(String prop : props){
-					String[] temps=prop.split("(&_&)");
+					String[] temps=prop.split("\\(&\\_&\\)");
 					connection.setRequestProperty(temps[0], temps[1]);
 					if("Content-Encoding".equals(temps[0])){
 						encode=temps[1];
