@@ -3,6 +3,8 @@ package com.chinacreator.panel;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -56,7 +58,7 @@ public class GetPanel {
 		
 		JPanel pProp=new JPanel();
 		JLabel labProp=new JLabel("属性:");
-		JTextArea textProp=new JTextArea(3,60);
+		final JTextArea textProp=new JTextArea(3,60);
 		textProp.setText("Content-Encoding(&_&)UTF-8(#_#)Cookie(&_&)value....");
 		textProp.setLineWrap(true);
 		JScrollPane scrollProp = new JScrollPane(textProp);
@@ -93,6 +95,18 @@ public class GetPanel {
 			public void actionPerformed(ActionEvent e) {
 				textOutPut.setText("");
 			}
+		});
+		labParam.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+				int pos=textProp.getCaret().getDot();
+				textProp.insert("(&_&)", pos);
+    		}
+		});
+		labProp.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+				int pos=textProp.getCaret().getDot();
+				textProp.insert("(#_#)", pos);
+    		}
 		});
 		tabPanel.add(panel);
 		tabPanel.add(pOutPut);
