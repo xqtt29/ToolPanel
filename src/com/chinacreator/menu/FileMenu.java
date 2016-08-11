@@ -170,10 +170,13 @@ public class FileMenu {
 					}
 					@Override
 					public boolean accept(File f) {
-						 if(f.getName().endsWith(".prop")){
-					          return true;
-					     }
-					     return false;
+						if(f.isDirectory()){
+							return true;
+						}
+						if(f.getName().endsWith(".prop")){
+					        return true;
+					    }
+					    return false;
 					}
 				});
 				int returnval=saveChooserSavePath.showOpenDialog(tabbedPane);

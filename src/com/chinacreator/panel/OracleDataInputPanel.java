@@ -80,10 +80,13 @@ public class OracleDataInputPanel {
 					}
 					@Override
 					public boolean accept(File f) {
-						 if(f.getName().endsWith(".csv")){
-					          return true;
-					     }
-					     return false;
+						if(f.isDirectory()){
+							return true;
+						}
+						if(f.getName().endsWith(".csv")){
+					        return true;
+					    }
+					    return false;
 					}
 				});
 				addChooserSavePath.addChoosableFileFilter(new FileFilter() {
