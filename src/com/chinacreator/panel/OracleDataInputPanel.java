@@ -4,6 +4,9 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -14,6 +17,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 import com.chinacreator.Action.OracleDataInputAction;
+import com.chinacreator.Action.SaveAction;
 import com.chinacreator.util.TabUtil;
 
 /**
@@ -28,13 +32,15 @@ import com.chinacreator.util.TabUtil;
 public class OracleDataInputPanel {
 	//oracle数据导入模块主面板
 	private JPanel tabPanel;
+	private JTextArea textUrl;
+	private JTextArea textParam;
 	//图形控件实例化
 	public OracleDataInputPanel(){
 		tabPanel=new JPanel();
 		JPanel panel=new JPanel(new GridLayout(4, 1));
 		JPanel pUrl=new JPanel();
 		JLabel labUrl=new JLabel("数据库串:");
-		JTextArea textUrl=new JTextArea(3,60);
+		textUrl=new JTextArea(3,60);
 		textUrl.setText("userid=ecb/ecb2012@bsweb_new rows=1000 direct=TRUE");
 		textUrl.setLineWrap(true);
 		JScrollPane scrollUrl = new JScrollPane(textUrl);
@@ -46,7 +52,7 @@ public class OracleDataInputPanel {
 
 		JPanel pParam=new JPanel();
 		JLabel labParam=new JLabel("表列参数:");
-		JTextArea textParam=new JTextArea(3,60);
+		textParam=new JTextArea(3,60);
 		textParam.setText("TD_BIGDIAL_SPNUM#_#	#_#SPNUM,SPTYPE constant \"TICKET_READ10\"");
 		textParam.setLineWrap(true);
 		JScrollPane scrollParam = new JScrollPane(textParam);
@@ -109,6 +115,8 @@ public class OracleDataInputPanel {
 		JPanel pButton=new JPanel();
 		JButton button=new JButton("执行");
 		pButton.add(button);
+		JButton saveButton=new JButton("保存");
+		pButton.add(saveButton);
 		panel.add(pButton);
 
 		JPanel pOutPut=new JPanel();
@@ -119,7 +127,12 @@ public class OracleDataInputPanel {
 		scrollOutPut.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		pOutPut.add(scrollOutPut);
 		button.addActionListener(new OracleDataInputAction(textOutPut, textUrl, textFile, textParam));
-		
+
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("panelId", "OracleDataInputPanel");
+		map.put("textUrl", textUrl);
+		map.put("textParam", textParam);
+		saveButton.addActionListener(new SaveAction(tabPanel, map));
 		tabPanel.add(panel);
 		tabPanel.add(pOutPut);
 	}
@@ -131,6 +144,19 @@ public class OracleDataInputPanel {
 	 * @param title tab页标题
 	 */
 	public void createOracleDataInputJPanel(JTabbedPane tabbedPane,String title){
+		//添加tab页面
+		TabUtil.createTab(tabbedPane, tabPanel, title);
+	}
+	/**
+	 * @Description 
+		创建oracle数据导入模块tab页面
+	 * @Author qiang.zhu
+	 * @param tabbedPane 主tab控件
+	 * @param title tab页标题
+	 */
+	public void createOracleDataInputJPanel(final JTabbedPane tabbedPane,String title,String textUrl,String textParam){
+		this.textUrl.setText(textUrl);
+		this.textParam.setText(textParam);
 		//添加tab页面
 		TabUtil.createTab(tabbedPane, tabPanel, title);
 	}

@@ -1,12 +1,17 @@
 package com.chinacreator.panel;
 
 import java.awt.GridLayout;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+
+import com.chinacreator.Action.SaveAction;
 import com.chinacreator.Action.SocketAction;
 import com.chinacreator.util.TabUtil;
 
@@ -22,13 +27,16 @@ import com.chinacreator.util.TabUtil;
 public class SocketPanel {
 	//socket请求模块主面板
 	private JPanel tabPanel;
+	private JTextArea textIp;
+	private JTextArea textPort;
+	private JTextArea textContent;
 	//图形控件实例化
 	public SocketPanel(){
 		tabPanel=new JPanel();
 		JPanel panel=new JPanel(new GridLayout(4, 1));
 		JPanel pIp=new JPanel();
 		JLabel labIp=new JLabel("IP:");
-		JTextArea textIp=new JTextArea(3,60);
+		textIp=new JTextArea(3,60);
 		textIp.setLineWrap(true);
 		JScrollPane scrollUrl = new JScrollPane(textIp);
 		scrollUrl.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); 
@@ -39,7 +47,7 @@ public class SocketPanel {
 
 		JPanel pParam=new JPanel();
 		JLabel labPort=new JLabel("端口:");
-		JTextArea textPort=new JTextArea(3,60);
+		textPort=new JTextArea(3,60);
 		textPort.setLineWrap(true);
 		JScrollPane scrollParam = new JScrollPane(textPort);
 		scrollParam.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); 
@@ -50,7 +58,7 @@ public class SocketPanel {
 		
 		JPanel pProp=new JPanel();
 		JLabel labContent=new JLabel("内容:");
-		JTextArea textContent=new JTextArea(3,60);
+		textContent=new JTextArea(3,60);
 		textContent.setLineWrap(true);
 		JScrollPane scrollProp = new JScrollPane(textContent);
 		scrollProp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); 
@@ -64,6 +72,8 @@ public class SocketPanel {
 		pButton.add(labPic);
 		JButton button=new JButton("执行");
 		pButton.add(button);
+		JButton saveButton=new JButton("保存");
+		pButton.add(saveButton);
 		panel.add(pButton);
 
 		JPanel pOutPut=new JPanel();
@@ -75,7 +85,13 @@ public class SocketPanel {
 		pOutPut.add(scrollOutPut);
 		
 		button.addActionListener(new SocketAction(textOutPut, textIp, textPort, textContent));
-		
+
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("panelId", "SocketPanel");
+		map.put("textIp", textIp);
+		map.put("textPort", textPort);
+		map.put("textContent", textContent);
+		saveButton.addActionListener(new SaveAction(tabPanel, map));
 		tabPanel.add(panel);
 		tabPanel.add(pOutPut);
 	}
@@ -87,6 +103,23 @@ public class SocketPanel {
 	 * @param title tab页标题
 	 */
 	public void createSocketJPanel(final JTabbedPane tabbedPane,String title){
+		//添加tab页面
+		TabUtil.createTab(tabbedPane, tabPanel, title);
+	}
+	/**
+	 * @Description 
+		创建socket请求模块tab页面
+	 * @Author qiang.zhu
+	 * @param tabbedPane 主tab控件
+	 * @param title tab页标题
+	 * @param textIp IP
+	 * @param textPort 端口
+	 * @param textContent 内容
+	 */
+	public void createSocketJPanel(final JTabbedPane tabbedPane,String title,String textIp,String textPort,String textContent){
+		this.textIp.setText(textIp);
+		this.textPort.setText(textPort);
+		this.textContent.setText(textContent);
 		//添加tab页面
 		TabUtil.createTab(tabbedPane, tabPanel, title);
 	}

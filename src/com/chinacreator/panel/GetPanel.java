@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -15,6 +17,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.chinacreator.Action.GetAction;
+import com.chinacreator.Action.SaveAction;
 import com.chinacreator.util.TabUtil;
 
 /**
@@ -29,13 +32,16 @@ import com.chinacreator.util.TabUtil;
 public class GetPanel {
 	//get请求模块主面板
 	private JPanel tabPanel;
+	private JTextArea textUrl;
+	private JTextArea textParam;
+	private JTextArea textProp;
 	//图形控件实例化
 	public GetPanel(){
 		tabPanel=new JPanel();
 		JPanel panel=new JPanel(new GridLayout(4, 1));
 		JPanel pUrl=new JPanel();
 		JLabel labUrl=new JLabel("网址:");
-		JTextArea textUrl=new JTextArea(3,60);
+		textUrl=new JTextArea(3,60);
 		textUrl.setLineWrap(true);
 		JScrollPane scrollUrl = new JScrollPane(textUrl);
 		scrollUrl.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); 
@@ -46,7 +52,7 @@ public class GetPanel {
 
 		JPanel pParam=new JPanel();
 		JLabel labParam=new JLabel("参数:");
-		JTextArea textParam=new JTextArea(3,60);
+		textParam=new JTextArea(3,60);
 		textParam.setText("param1=value1&param2=value2....");
 		textParam.setLineWrap(true);
 		JScrollPane scrollParam = new JScrollPane(textParam);
@@ -58,7 +64,7 @@ public class GetPanel {
 		
 		JPanel pProp=new JPanel();
 		JLabel labProp=new JLabel("属性:");
-		final JTextArea textProp=new JTextArea(3,60);
+		textProp=new JTextArea(3,60);
 		textProp.setText("Content-Encoding(&_&)UTF-8(#_#)Cookie(&_&)value....");
 		textProp.setLineWrap(true);
 		JScrollPane scrollProp = new JScrollPane(textProp);
@@ -79,6 +85,8 @@ public class GetPanel {
 		pButton.add(button);
 		JButton clearButton=new JButton("重置");
 		pButton.add(clearButton);
+		JButton saveButton=new JButton("保存");
+		pButton.add(saveButton);
 		panel.add(pButton);
 
 		JPanel pOutPut=new JPanel();
@@ -108,6 +116,12 @@ public class GetPanel {
 				textProp.insert("(#_#)", pos);
     		}
 		});
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("panelId", "GetPanel");
+		map.put("textUrl", textUrl);
+		map.put("textParam", textParam);
+		map.put("textProp", textProp);
+		saveButton.addActionListener(new SaveAction(tabPanel, map));
 		tabPanel.add(panel);
 		tabPanel.add(pOutPut);
 	}
@@ -119,6 +133,23 @@ public class GetPanel {
 	 * @param title tab页标题
 	 */
 	public void createGetJPanel(final JTabbedPane tabbedPane,String title){
+		//添加tab页面
+		TabUtil.createTab(tabbedPane, tabPanel, title);
+	}
+	/**
+	 * @Description 
+		创建get请求模块tab页面
+	 * @Author qiang.zhu
+	 * @param tabbedPane 主tab控件
+	 * @param title tab页标题
+	 * @param textUrl 网址
+	 * @param textParam 参数
+	 * @param textProp 属性
+	 */
+	public void createGetJPanel(final JTabbedPane tabbedPane,String title,String textUrl,String textParam,String textProp){
+		this.textUrl.setText(textUrl);
+		this.textParam.setText(textParam);
+		this.textProp.setText(textProp);
 		//添加tab页面
 		TabUtil.createTab(tabbedPane, tabPanel, title);
 	}

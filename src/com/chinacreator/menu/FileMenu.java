@@ -2,14 +2,19 @@ package com.chinacreator.menu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.Map;
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
+import javax.swing.filechooser.FileFilter;
 import com.chinacreator.panel.GetPanel;
 import com.chinacreator.panel.MD5Panel;
 import com.chinacreator.panel.OracleDataInputPanel;
 import com.chinacreator.panel.PostPanel;
 import com.chinacreator.panel.SocketPanel;
+import com.chinacreator.service.PropFileService;
 
 /**
  * @Description 
@@ -29,7 +34,7 @@ public class FileMenu {
 	 * @param tabbedPane 主tab页控件
 	 * @return JMenu 文件菜单
 	 */
-	public JMenu createFileMenu(JTabbedPane tabbedPane){
+	public JMenu createFileMenu(final JTabbedPane tabbedPane){
 		JMenu menu=new JMenu("文件");
 		
 		JMenu menuFileAdd=new JMenu("添加模块");
@@ -45,6 +50,8 @@ public class FileMenu {
 		menuFileAdd.add(initFileAddSocketItem(tabbedPane));
 		
 		menu.add(menuFileAdd);
+		
+		menu.add(initFileOpenItem(tabbedPane));
 		
 		return menu;
 	}
@@ -139,5 +146,56 @@ public class FileMenu {
 			}
 		});
 		return fileAddSocketItem;
+	}
+	/**
+	 * @Description 
+		初始化文件菜单中的【打开】菜单
+	 * @Author qiang.zhu
+	 * @param tabbedPane 主tab页控件
+	 * @return JMenu oracle数据导入菜单项
+	 */
+	private JMenuItem initFileOpenItem(final JTabbedPane tabbedPane){
+		JMenuItem fileOpen=new JMenuItem("打开");
+		fileOpen.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final JFileChooser saveChooserSavePath=new JFileChooser();
+				saveChooserSavePath.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				saveChooserSavePath.setAcceptAllFileFilterUsed(false);
+				saveChooserSavePath.setCurrentDirectory(new File(System.getProperty("user.dir")));
+				saveChooserSavePath.addChoosableFileFilter(new FileFilter() {
+					@Override
+					public String getDescription() {
+						return "属性文件(*.prop)";
+					}
+					@Override
+					public boolean accept(File f) {
+						 if(f.getName().endsWith(".prop")){
+					          return true;
+					     }
+					     return false;
+					}
+				});
+				int returnval=saveChooserSavePath.showOpenDialog(tabbedPane);
+		        if(returnval==JFileChooser.APPROVE_OPTION) 
+		        { 
+		        	File file = saveChooserSavePath.getSelectedFile();
+		        	Map<String,Object> map=new PropFileService().getPropFileInfo(file.getAbsolutePath());
+		        	String panelId=map.get("panelId")==null?"":map.get("panelId").toString();
+		        	if("PostPanel".equals(panelId)){
+		        		new PostPanel().createPostJPanel(tabbedPane, "post请求", map.get("textUrl")==null?"":map.get("textUrl").toString(), map.get("textParam")==null?"":map.get("textParam").toString(), map.get("textProp")==null?"":map.get("textProp").toString());
+		        	}else if("GetPanel".equals(panelId)){
+		        		new GetPanel().createGetJPanel(tabbedPane, "get请求", map.get("textUrl")==null?"":map.get("textUrl").toString(), map.get("textParam")==null?"":map.get("textParam").toString(), map.get("textProp")==null?"":map.get("textProp").toString());
+		        	}else if("OracleDataInputPanel".equals(panelId)){
+		        		new OracleDataInputPanel().createOracleDataInputJPanel(tabbedPane, "oracle数据导入", map.get("textUrl")==null?"":map.get("textUrl").toString(), map.get("textParam")==null?"":map.get("textParam").toString());
+		        	}else if("MD5Panel".equals(panelId)){
+		        		new MD5Panel().createMD5JPanel(tabbedPane, "MD5加密", map.get("textContent")==null?"":map.get("textContent").toString());
+		        	}else if("SocketPanel".equals(panelId)){
+		        		new SocketPanel().createSocketJPanel(tabbedPane, "socket请求", map.get("textIp")==null?"":map.get("textIp").toString(), map.get("textPort")==null?"":map.get("textPort").toString(), map.get("textContent")==null?"":map.get("textContent").toString());
+		        	}
+		        } 
+			}
+		});
+		return fileOpen;
 	}
 }
