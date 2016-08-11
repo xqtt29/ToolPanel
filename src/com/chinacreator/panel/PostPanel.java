@@ -1,12 +1,17 @@
 package com.chinacreator.panel;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import com.chinacreator.Action.PostAction;
 import com.chinacreator.util.TabUtil;
 
@@ -51,7 +56,7 @@ public class PostPanel {
 		
 		JPanel pProp=new JPanel();
 		JLabel labProp=new JLabel("属性:");
-		JTextArea textProp=new JTextArea(3,60);
+		final JTextArea textProp=new JTextArea(3,60);
 		textProp.setText("Content-Encoding(&_&)UTF-8(#_#)Cookie(&_&)value....");
 		textProp.setLineWrap(true);
 		JScrollPane scrollProp = new JScrollPane(textProp);
@@ -64,20 +69,43 @@ public class PostPanel {
 		JPanel pButton=new JPanel();
 		JLabel labPic=new JLabel();
 		pButton.add(labPic);
+		JTextField textThreadCounts=new JTextField();
+		textThreadCounts.setText("1");
+		textThreadCounts.setColumns(3);
+		pButton.add(textThreadCounts);
 		JButton button=new JButton("执行");
 		pButton.add(button);
+		JButton clearButton=new JButton("重置");
+		pButton.add(clearButton);
 		panel.add(pButton);
 
 		JPanel pOutPut=new JPanel();
-		JTextArea textOutPut=new JTextArea(14,65);
+		final JTextArea textOutPut=new JTextArea(14,65);
 		textOutPut.setLineWrap(true);
 		JScrollPane scroll = new JScrollPane(textOutPut);
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); 
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		pOutPut.add(scroll);
 
-		button.addActionListener(new PostAction(textOutPut, labPic, textUrl, textProp, textParam));
-		
+		button.addActionListener(new PostAction(textOutPut, textThreadCounts,labPic, textUrl, textProp, textParam));
+		clearButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				textOutPut.setText("");
+			}
+		});
+		labParam.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+				int pos=textProp.getCaret().getDot();
+				textProp.insert("(&_&)", pos);
+    		}
+		});
+		labProp.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+				int pos=textProp.getCaret().getDot();
+				textProp.insert("(#_#)", pos);
+    		}
+		});
 		tabPanel.add(panel);
 		tabPanel.add(pOutPut);
 	}

@@ -1,12 +1,17 @@
 package com.chinacreator.panel;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
 import com.chinacreator.Action.GetAction;
 import com.chinacreator.util.TabUtil;
 
@@ -64,20 +69,31 @@ public class GetPanel {
 		JPanel pButton=new JPanel();
 		JLabel labPic=new JLabel();
 		pButton.add(labPic);
+		JTextField textThreadCounts=new JTextField();
+		textThreadCounts.setText("1");
+		textThreadCounts.setColumns(3);
+		pButton.add(textThreadCounts);
 		JButton button=new JButton("执行");
 		pButton.add(button);
+		JButton clearButton=new JButton("重置");
+		pButton.add(clearButton);
 		panel.add(pButton);
 
 		JPanel pOutPut=new JPanel();
-		JTextArea textOutPut=new JTextArea(13,65);
+		final JTextArea textOutPut=new JTextArea(13,65);
 		textOutPut.setLineWrap(true);
 		JScrollPane scrollOutPut = new JScrollPane(textOutPut);
 		scrollOutPut.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); 
 		scrollOutPut.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		pOutPut.add(scrollOutPut);
 		
-		button.addActionListener(new GetAction(textOutPut, labPic, textUrl, textProp, textParam));
-		
+		button.addActionListener(new GetAction(textOutPut,textThreadCounts, labPic, textUrl, textProp, textParam));
+		clearButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				textOutPut.setText("");
+			}
+		});
 		tabPanel.add(panel);
 		tabPanel.add(pOutPut);
 	}

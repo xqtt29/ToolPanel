@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
 import com.chinacreator.service.GetService;
 
 /**
@@ -22,6 +24,8 @@ import com.chinacreator.service.GetService;
 public class GetAction implements ActionListener{
 	//输出控件
 	private JTextArea textOutPut;
+	//并发数
+	private JTextField textThreadCounts;
 	//验证码控件
 	private JLabel labPic;
 	//url文本控件
@@ -31,8 +35,9 @@ public class GetAction implements ActionListener{
 	//参数文本控件
 	private JTextArea textParam;
 	
-	public GetAction(JTextArea textOutPut,JLabel labPic,JTextArea textUrl,JTextArea textProp,JTextArea textParam){
+	public GetAction(JTextArea textOutPut,JTextField textThreadCounts,JLabel labPic,JTextArea textUrl,JTextArea textProp,JTextArea textParam){
 		this.textOutPut=textOutPut;
+		this.textThreadCounts=textThreadCounts;
 		this.labPic=labPic;
 		this.textUrl=textUrl;
 		this.textProp=textProp;
@@ -40,17 +45,25 @@ public class GetAction implements ActionListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//调用get请求服务
-		Map<String,Object> result=new GetService().sendGet(textUrl.getText(), textParam.getText(), textProp.getText());
-		//如果是验证码图片，则在控件中显示验证码图片
-		if(result.get("yzpic")!=null){
-			final BufferedImage bi=(BufferedImage)result.get("yzpic");
-			ImageIcon ii=new ImageIcon((Image)bi);
-			labPic.setIcon(ii);
-			result.remove("yzpic");
+		int threadCounts=Integer.parseInt(textThreadCounts.getText());
+		for(int i=0;i<threadCounts;i++){
+			new Thread(new Runnable() {
+				public void run() {
+					//调用get请求服务
+					Map<String,Object> result=new GetService().sendGet(textUrl.getText(), textParam.getText(), textProp.getText());
+					//如果是验证码图片，则在控件中显示验证码图片
+					if(result.get("yzpic")!=null){
+						final BufferedImage bi=(BufferedImage)result.get("yzpic");
+						ImageIcon ii=new ImageIcon((Image)bi);
+						labPic.setIcon(ii);
+						result.remove("yzpic");
+					}
+					//在输出控件上输出get请求结果
+					textOutPut.append("\r\n"+Thread.currentThread().getName()+":\r\n"+result.toString());
+					textOutPut.paintImmediately(textOutPut.getBounds());
+				}
+			}).start();;
 		}
-		//在输出控件上输出get请求结果
-		textOutPut.setText(result.toString());
 	}
 
 }
