@@ -13,6 +13,7 @@ import com.chinacreator.panel.GetPanel;
 import com.chinacreator.panel.MD5Panel;
 import com.chinacreator.panel.OracleDataInputPanel;
 import com.chinacreator.panel.PostPanel;
+import com.chinacreator.panel.ProxyPanel;
 import com.chinacreator.panel.SocketPanel;
 import com.chinacreator.service.PropFileService;
 
@@ -195,6 +196,8 @@ public class FileMenu {
 		        		new MD5Panel().createMD5JPanel(tabbedPane, "MD5加密", map.get("textContent")==null?"":map.get("textContent").toString());
 		        	}else if("SocketPanel".equals(panelId)){
 		        		new SocketPanel().createSocketJPanel(tabbedPane, "socket请求", map.get("textIp")==null?"":map.get("textIp").toString(), map.get("textPort")==null?"":map.get("textPort").toString(), map.get("textContent")==null?"":map.get("textContent").toString());
+		        	}else if("ProxyPanel".equals(panelId)){
+		        		new ProxyPanel().createProxyJPanel(tabbedPane, "代理配置", map.get("textIp")==null?"":map.get("textIp").toString(), map.get("textPort")==null?"":map.get("textPort").toString(), map.get("textUser")==null?"":map.get("textUser").toString(), map.get("textPass")==null?"":map.get("textPass").toString());
 		        	}
 		        } 
 			}
