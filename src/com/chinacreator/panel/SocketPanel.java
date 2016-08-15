@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -70,6 +71,13 @@ public class SocketPanel {
 		JPanel pButton=new JPanel();
 		JLabel labPic=new JLabel();
 		pButton.add(labPic);
+
+		JLabel labProxy=new JLabel();
+		labProxy.setText("使用代理:");
+		pButton.add(labProxy);
+		final JCheckBox boxProxy=new JCheckBox();
+		pButton.add(boxProxy);
+		
 		JButton button=new JButton("执行");
 		pButton.add(button);
 		JButton saveButton=new JButton("保存");
@@ -84,7 +92,7 @@ public class SocketPanel {
 		scrollOutPut.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		pOutPut.add(scrollOutPut);
 		
-		button.addActionListener(new SocketAction(textOutPut, textIp, textPort, textContent));
+		button.addActionListener(new SocketAction(textOutPut, textIp, textPort, textContent,boxProxy));
 
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("panelId", "SocketPanel");

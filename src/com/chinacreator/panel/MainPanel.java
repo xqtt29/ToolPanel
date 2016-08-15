@@ -7,6 +7,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JTabbedPane;
 import com.chinacreator.menu.FileMenu;
 import com.chinacreator.menu.HelpMenu;
+import com.chinacreator.menu.ToolMenu;
 
 /**
  * @Description 
@@ -49,6 +50,8 @@ public class MainPanel {
 		JMenuBar menuBar=new JMenuBar();
 		//创建文件菜单
 		menuBar.add(new FileMenu().createFileMenu(tabbedPane));
+		//创建工具菜单
+		menuBar.add(new ToolMenu().createToolMenu(tabbedPane));
 		//创建帮助菜单
 		menuBar.add(new HelpMenu(jf).createHelpMenu(tabbedPane));
 		jf.setJMenuBar(menuBar);

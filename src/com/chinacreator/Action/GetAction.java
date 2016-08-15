@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -34,14 +35,17 @@ public class GetAction implements ActionListener{
 	private JTextArea textProp;
 	//参数文本控件
 	private JTextArea textParam;
+	//是否使用代理
+	private JCheckBox proxyBox;
 	
-	public GetAction(JTextArea textOutPut,JTextField textThreadCounts,JLabel labPic,JTextArea textUrl,JTextArea textProp,JTextArea textParam){
+	public GetAction(JTextArea textOutPut,JTextField textThreadCounts,JLabel labPic,JTextArea textUrl,JTextArea textProp,JTextArea textParam,JCheckBox proxyBox){
 		this.textOutPut=textOutPut;
 		this.textThreadCounts=textThreadCounts;
 		this.labPic=labPic;
 		this.textUrl=textUrl;
 		this.textProp=textProp;
 		this.textParam=textParam;
+		this.proxyBox=proxyBox;
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -50,7 +54,7 @@ public class GetAction implements ActionListener{
 			new Thread(new Runnable() {
 				public void run() {
 					//调用get请求服务
-					Map<String,Object> result=new GetService().sendGet(textUrl.getText(), textParam.getText(), textProp.getText());
+					Map<String,Object> result=new GetService().sendGet(textUrl.getText(), textParam.getText(), textProp.getText(),proxyBox.isSelected());
 					//如果是验证码图片，则在控件中显示验证码图片
 					if(result.get("yzpic")!=null){
 						final BufferedImage bi=(BufferedImage)result.get("yzpic");

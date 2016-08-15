@@ -7,15 +7,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-
 import com.chinacreator.Action.GetAction;
 import com.chinacreator.Action.SaveAction;
 import com.chinacreator.util.TabUtil;
@@ -77,10 +76,21 @@ public class GetPanel {
 		JPanel pButton=new JPanel();
 		JLabel labPic=new JLabel();
 		pButton.add(labPic);
+		
+		JLabel labProxy=new JLabel();
+		labProxy.setText("使用代理:");
+		pButton.add(labProxy);
+		final JCheckBox boxProxy=new JCheckBox();
+		pButton.add(boxProxy);
+
+		JLabel labThread=new JLabel();
+		labThread.setText("线程数:");
+		pButton.add(labThread);
 		JTextField textThreadCounts=new JTextField();
 		textThreadCounts.setText("1");
 		textThreadCounts.setColumns(3);
 		pButton.add(textThreadCounts);
+		
 		JButton button=new JButton("执行");
 		pButton.add(button);
 		JButton clearButton=new JButton("重置");
@@ -97,7 +107,7 @@ public class GetPanel {
 		scrollOutPut.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		pOutPut.add(scrollOutPut);
 		
-		button.addActionListener(new GetAction(textOutPut,textThreadCounts, labPic, textUrl, textProp, textParam));
+		button.addActionListener(new GetAction(textOutPut,textThreadCounts, labPic, textUrl, textProp, textParam,boxProxy));
 		clearButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

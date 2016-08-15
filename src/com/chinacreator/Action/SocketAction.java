@@ -2,6 +2,8 @@ package com.chinacreator.Action;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JCheckBox;
 import javax.swing.JTextArea;
 import com.chinacreator.service.SocketService;
 
@@ -23,19 +25,22 @@ public class SocketAction implements ActionListener{
 	private JTextArea textPort;
 	//信息文本控件
 	private JTextArea textContent;
+	//是否使用代理
+	private JCheckBox proxyBox;
 	
-	public SocketAction(JTextArea textOutPut,JTextArea textIp,JTextArea textPort,JTextArea textContent){
+	public SocketAction(JTextArea textOutPut,JTextArea textIp,JTextArea textPort,JTextArea textContent,JCheckBox proxyBox){
 		this.textOutPut=textOutPut;
 		this.textIp=textIp;
 		this.textPort=textPort;
 		this.textContent=textContent;
+		this.proxyBox=proxyBox;
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		//调用Socket请求服务
 		new Thread(new Runnable() {
 			public void run() {
-				new SocketService().sendSocket(textOutPut,textIp.getText(), textPort.getText(), textContent.getText());
+				new SocketService().sendSocket(textOutPut,textIp.getText(), textPort.getText(), textContent.getText(),proxyBox.isSelected());
 			}
 		}).start();
 	}

@@ -9,9 +9,8 @@ import java.util.Map;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.filechooser.FileFilter;
-
+import javax.swing.text.JTextComponent;
 import com.chinacreator.service.PropFileService;
 
 /**
@@ -66,7 +65,7 @@ public class SaveAction implements ActionListener{
         		String key=it.next();
         		Object value=datas.get(key);
         		if(!"panelId".equals(key)){
-        			map.put(key, ((JTextArea)value).getText());
+        			map.put(key, ((JTextComponent)value).getText());
         		}
         	}
         	new PropFileService().setPropFileInfo(file.getAbsolutePath()+(file.getAbsolutePath().endsWith(".prop")?"":".prop"), map);

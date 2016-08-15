@@ -9,6 +9,8 @@ import java.net.Socket;
 
 import javax.swing.JTextArea;
 
+import com.chinacreator.common.Global;
+
 /**
  * @Description 
 	Socket请求服务类
@@ -28,9 +30,10 @@ public class SocketService {
 	 * @param ip ip地址
 	 * @param port 端口
 	 * @param content 发送内容
+	 * @param isUseProxy 使用代理
 	 * @return String 结果信息
 	 */
-	public void sendSocket(JTextArea textOutPut,String ip,String port,String content){
+	public void sendSocket(JTextArea textOutPut,String ip,String port,String content,boolean isUseProxy){
 		Socket socket = null;
         DataOutputStream dos = null;
         DataInputStream dis = null;
@@ -38,6 +41,20 @@ public class SocketService {
         ByteArrayOutputStream baos = null;
         try {
             try {
+            	//如果使用代理
+    			if(isUseProxy){
+    				System.getProperties().put("socksProxySet", Boolean.valueOf(Global.isProxy));
+    				System.getProperties().put("socksProxyHost", Global.proxyHost==null?"":Global.proxyHost);
+    				System.getProperties().put("socksProxyPort", Global.proxyPort==null?"":Global.proxyPort);
+    				System.getProperties().put("socksProxyUser", Global.proxyUser==null?"":Global.proxyUser);
+    				System.getProperties().put("socksProxyPassword", Global.proxyPass==null?"":Global.proxyPass);
+    			}else{
+    				System.getProperties().put("socksProxySet", Boolean.valueOf(false));
+    				System.getProperties().put("socksProxyHost", "");
+    				System.getProperties().put("socksProxyPort", "");
+    				System.getProperties().put("socksProxyUser", "");
+    				System.getProperties().put("socksProxyPassword", "");
+    			}
                 socket = new Socket();
                 socket.setSoTimeout(30000);
                 socket.connect(new InetSocketAddress(ip,Integer.parseInt(port)),

@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
+
+import com.chinacreator.common.Global;
 import com.chinacreator.util.SslUtils;
 
 /**
@@ -30,14 +32,29 @@ public class GetService {
 	 * @param strUrl url网址
 	 * @param inputParam 请求参数
 	 * @param properties 请求头部属性
+	 * @param isUseProxy 使用代理
 	 * @return Map 结果信息
 	 */
-	public Map<String,Object> sendGet(String strUrl,String inputParam,String properties){
+	public Map<String,Object> sendGet(String strUrl,String inputParam,String properties,boolean isUseProxy){
 		Map<String,Object> outMap = new HashMap<String,Object>();
 		URL url = null;
 		HttpURLConnection connection = null;
 		BufferedReader reader = null;
 		try {
+			//如果使用代理
+			if(isUseProxy){
+				System.getProperties().put("socksProxySet", Boolean.valueOf(Global.isProxy));
+				System.getProperties().put("socksProxyHost", Global.proxyHost==null?"":Global.proxyHost);
+				System.getProperties().put("socksProxyPort", Global.proxyPort==null?"":Global.proxyPort);
+				System.getProperties().put("socksProxyUser", Global.proxyUser==null?"":Global.proxyUser);
+				System.getProperties().put("socksProxyPassword", Global.proxyPass==null?"":Global.proxyPass);
+			}else{
+				System.getProperties().put("socksProxySet", Boolean.valueOf(false));
+				System.getProperties().put("socksProxyHost", "");
+				System.getProperties().put("socksProxyPort", "");
+				System.getProperties().put("socksProxyUser", "");
+				System.getProperties().put("socksProxyPassword", "");
+			}
 			SslUtils.ignoreSsl();
 			String encode="UTF-8";
 			url = new URL(strUrl+(inputParam!=null&&inputParam.length()!=0?("?"+inputParam):""));

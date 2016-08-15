@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -76,10 +77,18 @@ public class PostPanel {
 		JPanel pButton=new JPanel();
 		JLabel labPic=new JLabel();
 		pButton.add(labPic);
+		
+		JLabel labProxy=new JLabel();
+		labProxy.setText("使用代理:");
+		pButton.add(labProxy);
+		final JCheckBox boxProxy=new JCheckBox();
+		pButton.add(boxProxy);
+		
 		JTextField textThreadCounts=new JTextField();
 		textThreadCounts.setText("1");
 		textThreadCounts.setColumns(3);
 		pButton.add(textThreadCounts);
+		
 		JButton button=new JButton("执行");
 		pButton.add(button);
 		JButton clearButton=new JButton("重置");
@@ -96,7 +105,7 @@ public class PostPanel {
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		pOutPut.add(scroll);
 
-		button.addActionListener(new PostAction(textOutPut, textThreadCounts,labPic, textUrl, textProp, textParam));
+		button.addActionListener(new PostAction(textOutPut, textThreadCounts,labPic, textUrl, textProp, textParam,boxProxy));
 		clearButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
