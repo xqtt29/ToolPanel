@@ -6,6 +6,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -42,23 +44,15 @@ public class PostService {
 		DataOutputStream out = null;
 		BufferedReader reader = null;
 		try {
-			//如果使用代理
-			if(isUseProxy){
-				System.getProperties().put("socksProxySet", Boolean.valueOf(Global.isProxy));
-				System.getProperties().put("socksProxyHost", Global.proxyHost==null?"":Global.proxyHost);
-				System.getProperties().put("socksProxyPort", Global.proxyPort==null?"":Global.proxyPort);
-				System.getProperties().put("socksProxyUser", Global.proxyUser==null?"":Global.proxyUser);
-				System.getProperties().put("socksProxyPassword", Global.proxyPass==null?"":Global.proxyPass);
-			}else{
-				System.getProperties().put("socksProxySet", Boolean.valueOf(false));
-				System.getProperties().put("socksProxyHost", "");
-				System.getProperties().put("socksProxyPort", "");
-				System.getProperties().put("socksProxyUser", "");
-				System.getProperties().put("socksProxyPassword", "");
-			}
 			SslUtils.ignoreSsl();
 			URL url = new URL(strUrl);
-			connection = (HttpURLConnection) url.openConnection();
+			//如果使用代理
+			if(isUseProxy){
+				Proxy proxy=new Proxy(Proxy.Type.HTTP, new InetSocketAddress(Global.proxyHost==null?"":Global.proxyHost, Global.proxyPort==null?808:Integer.parseInt(Global.proxyPort)));
+				connection = (HttpURLConnection) url.openConnection(proxy);
+			}else{
+				connection = (HttpURLConnection) url.openConnection();
+			}
 			connection.setDoOutput(true);
 			connection.setDoInput(true);
 			String encode="UTF-8";
@@ -73,8 +67,8 @@ public class PostService {
 				}
 			}
 			connection.setRequestMethod("POST");
-			connection.setConnectTimeout(30000);
-			connection.setReadTimeout(30000);
+			connection.setConnectTimeout(15*1000);
+			connection.setReadTimeout(15*1000);
 			connection.connect();
 			out = new DataOutputStream(connection
 					.getOutputStream());

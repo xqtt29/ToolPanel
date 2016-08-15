@@ -56,9 +56,9 @@ public class SocketService {
     				System.getProperties().put("socksProxyPassword", "");
     			}
                 socket = new Socket();
-                socket.setSoTimeout(30000);
+                socket.setSoTimeout(15000);
                 socket.connect(new InetSocketAddress(ip,Integer.parseInt(port)),
-                               30000);
+                               15000);
                 dos = new DataOutputStream(socket.getOutputStream());
                 dos.write(content.getBytes(), 0, content.getBytes().length);
                 dos.flush();

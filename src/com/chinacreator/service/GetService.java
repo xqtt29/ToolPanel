@@ -5,6 +5,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -41,24 +43,16 @@ public class GetService {
 		HttpURLConnection connection = null;
 		BufferedReader reader = null;
 		try {
-			//如果使用代理
-			if(isUseProxy){
-				System.getProperties().put("socksProxySet", Boolean.valueOf(Global.isProxy));
-				System.getProperties().put("socksProxyHost", Global.proxyHost==null?"":Global.proxyHost);
-				System.getProperties().put("socksProxyPort", Global.proxyPort==null?"":Global.proxyPort);
-				System.getProperties().put("socksProxyUser", Global.proxyUser==null?"":Global.proxyUser);
-				System.getProperties().put("socksProxyPassword", Global.proxyPass==null?"":Global.proxyPass);
-			}else{
-				System.getProperties().put("socksProxySet", Boolean.valueOf(false));
-				System.getProperties().put("socksProxyHost", "");
-				System.getProperties().put("socksProxyPort", "");
-				System.getProperties().put("socksProxyUser", "");
-				System.getProperties().put("socksProxyPassword", "");
-			}
 			SslUtils.ignoreSsl();
 			String encode="UTF-8";
 			url = new URL(strUrl+(inputParam!=null&&inputParam.length()!=0?("?"+inputParam):""));
-			connection = (HttpURLConnection) url.openConnection();
+			//如果使用代理
+			if(isUseProxy){
+				Proxy proxy=new Proxy(Proxy.Type.HTTP, new InetSocketAddress(Global.proxyHost==null?"":Global.proxyHost, Global.proxyPort==null?808:Integer.parseInt(Global.proxyPort)));
+				connection = (HttpURLConnection) url.openConnection(proxy);
+			}else{
+				connection = (HttpURLConnection) url.openConnection();
+			}
 			if(properties!=null&&properties.length()!=0){
 				String[] props=properties.split("\\(#\\_#\\)");
 				for(String prop : props){
@@ -70,6 +64,8 @@ public class GetService {
 					connection.setRequestProperty(temps[0], temps[1]);
 				}
 			}
+			connection.setConnectTimeout(15*1000);
+			connection.setReadTimeout(15*1000);
 			connection.connect();
             Map<String, List<String>> map = connection.getHeaderFields();
             String fileType=map.get("Content-Type")==null?"":map.get("Content-Type").toString();
