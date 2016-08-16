@@ -2,7 +2,6 @@ package com.chinacreator.menu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -19,11 +18,6 @@ import javax.swing.JTabbedPane;
  */
 public class HelpMenu {
 	
-	private JFrame jf;
-	
-	public HelpMenu(JFrame jf){
-		this.jf=jf;
-	}
 	/**
 	 * @Description 
 		初始化文件菜单图形界面
@@ -31,13 +25,13 @@ public class HelpMenu {
 	 * @param tabbedPane 主tab页控件
 	 * @return JMenu 帮助菜单
 	 */
-	public JMenu createHelpMenu(JTabbedPane tabbedPane){
+	public JMenu createHelpMenu(final JTabbedPane tabbedPane){
 		JMenu menu=new JMenu("帮助");
 		JMenuItem helpAbout=new JMenuItem("当前版本");
 		helpAbout.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(jf, "version:20160802", "当前版本",JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(tabbedPane, "version:20160816\r\n增加代理配置", "当前版本",JOptionPane.WARNING_MESSAGE);
 			}
 		});
 		menu.add(helpAbout);

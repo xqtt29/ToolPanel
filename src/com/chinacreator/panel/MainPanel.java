@@ -53,7 +53,7 @@ public class MainPanel {
 		//创建工具菜单
 		menuBar.add(new ToolMenu().createToolMenu(tabbedPane));
 		//创建帮助菜单
-		menuBar.add(new HelpMenu(jf).createHelpMenu(tabbedPane));
+		menuBar.add(new HelpMenu().createHelpMenu(tabbedPane));
 		jf.setJMenuBar(menuBar);
 		
 		//显示主窗口

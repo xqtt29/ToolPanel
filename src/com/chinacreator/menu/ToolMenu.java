@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import com.chinacreator.panel.ProxyPanel;
 
@@ -36,6 +37,17 @@ public class ToolMenu {
 			}
 		});
 		menu.add(toolProxy);
+		
+		JMenuItem fileUploadDown=new JMenuItem("文件上传与下载");
+		fileUploadDown.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//初始文件上传下载模块界面
+				//MainAction.creatFrame();
+				JOptionPane.showMessageDialog(tabbedPane, "暂未集成", "文件上传与下载",JOptionPane.WARNING_MESSAGE);
+			}
+		});
+		menu.add(fileUploadDown);
 		return menu;
 	}
 }
