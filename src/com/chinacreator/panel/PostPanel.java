@@ -84,6 +84,9 @@ public class PostPanel {
 		final JCheckBox boxProxy=new JCheckBox();
 		pButton.add(boxProxy);
 		
+		JLabel labThread=new JLabel();
+		labThread.setText("线程数:");
+		pButton.add(labThread);
 		JTextField textThreadCounts=new JTextField();
 		textThreadCounts.setText("1");
 		textThreadCounts.setColumns(3);
