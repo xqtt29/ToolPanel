@@ -42,7 +42,8 @@ public class PostAction implements ActionListener{
 	private JTextArea textParam;
 	//是否使用代理
 	private JCheckBox proxyBox;
-	private String tempText;
+	private List<String> list;
+	private int counts;
 	
 	public PostAction(JTextArea textOutPut,JTextField textThreadCounts,JLabel labPic,JTextArea textUrl,JTextArea textProp,JTextArea textParam,JCheckBox proxyBox){
 		this.textOutPut=textOutPut;
@@ -56,21 +57,20 @@ public class PostAction implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		int threadCounts=Integer.parseInt(textThreadCounts.getText());
-		tempText=textParam.getText();
-		Pattern pattern = Pattern.compile("\\{(.+?)\\}");
+		Pattern pattern = Pattern.compile("\\<(.+?)\\>");
 		Matcher matcher = pattern.matcher(textParam.getText());
-		List<String> list=new ArrayList<String>();
+		list=new ArrayList<String>();
 		while(matcher.find()){
 			list.add(matcher.group(1));
 		}
+		counts=1;
 		for(int i=0;i<threadCounts;i++){
-			for(String temp : list){
-				tempText=textParam.getText().replace("{"+temp+"}", getLenStr(i,Integer.parseInt(temp),"0"));
-			}
-			System.out.println(tempText);
 			new Thread(new Runnable() {
 				public void run() {
-					String text=new String(tempText);
+					String text=textParam.getText();
+					for(String temp : list){
+						text=text.replace("<"+temp+">", getLenStr(counts++,Integer.parseInt(temp),"0"));
+					}
 					//调用post请求服务
 					Map<String,Object> result=new PostService().sendPost(textUrl.getText(), text, textProp.getText(),proxyBox.isSelected());
 					//如果是验证码图片，则在控件中显示验证码图片
