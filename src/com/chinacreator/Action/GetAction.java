@@ -43,6 +43,7 @@ public class GetAction implements ActionListener{
 	//是否使用代理
 	private JCheckBox proxyBox;
 	private List<String> list;
+	private List<String> listProp;
 	private int counts;
 	
 	public GetAction(JTextArea textOutPut,JTextField textThreadCounts,JLabel labPic,JTextArea textUrl,JTextArea textProp,JTextArea textParam,JCheckBox proxyBox){
@@ -63,6 +64,11 @@ public class GetAction implements ActionListener{
 		while(matcher.find()){
 			list.add(matcher.group(1));
 		}
+		Matcher matcherProp = pattern.matcher(textProp.getText());
+		listProp=new ArrayList<String>();
+		while(matcherProp.find()){
+			listProp.add(matcherProp.group(1));
+		}
 		counts=1;
 		for(int i=0;i<threadCounts;i++){
 			new Thread(new Runnable() {
@@ -71,8 +77,12 @@ public class GetAction implements ActionListener{
 					for(String temp : list){
 						text=text.replace("<"+temp+">", getLenStr(counts++,Integer.parseInt(temp),"0"));
 					}
+					String textP=textProp.getText();
+					for(String temp : listProp){
+						textP=textP.replace("<"+temp+">", getLenStr(counts++,Integer.parseInt(temp),"0"));
+					}
 					//调用get请求服务
-					Map<String,Object> result=new GetService().sendGet(textUrl.getText(), text, textProp.getText(),proxyBox.isSelected());
+					Map<String,Object> result=new GetService().sendGet(textUrl.getText(), text, textP,proxyBox.isSelected());
 					//如果是验证码图片，则在控件中显示验证码图片
 					if(result.get("yzpic")!=null){
 						final BufferedImage bi=(BufferedImage)result.get("yzpic");
