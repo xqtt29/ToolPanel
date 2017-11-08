@@ -18,18 +18,18 @@ import com.chinacreator.util.SslUtils;
 
 /**
  * @Description 
-	get请求服务类
+	delete请求服务类
  * @Author qiang.zhu
  * @Datetime 2016年8月4日 上午10:37:21
  * @Version 
  * @Copyright (c) 2013 湖南科创信息技术股份有限公司
 
  */
-public class GetService {
+public class DeleteService {
 	
 	/**
 	 * @Description 
-		发送get请求
+		发送delete请求
 	 * @Author qiang.zhu
 	 * @param strUrl url网址
 	 * @param inputParam 请求参数
@@ -37,7 +37,7 @@ public class GetService {
 	 * @param isUseProxy 使用代理
 	 * @return Map 结果信息
 	 */
-	public Map<String,Object> sendGet(String strUrl,String inputParam,String properties,boolean isUseProxy){
+	public Map<String,Object> sendDelete(String strUrl,String inputParam,String properties,boolean isUseProxy){
 		Map<String,Object> outMap = new HashMap<String,Object>();
 		URL url = null;
 		HttpURLConnection connection = null;
@@ -64,6 +64,7 @@ public class GetService {
 					connection.setRequestProperty(temps[0], temps[1]);
 				}
 			}
+			connection.setRequestMethod("DELETE");
 			connection.setConnectTimeout(15*1000);
 			connection.setReadTimeout(15*1000);
 			connection.connect();

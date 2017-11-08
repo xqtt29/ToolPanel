@@ -9,11 +9,14 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
 import javax.swing.filechooser.FileFilter;
+
+import com.chinacreator.panel.DeletePanel;
 import com.chinacreator.panel.GetPanel;
 import com.chinacreator.panel.MD5Panel;
 import com.chinacreator.panel.OracleDataInputPanel;
 import com.chinacreator.panel.PostPanel;
 import com.chinacreator.panel.ProxyPanel;
+import com.chinacreator.panel.PutPanel;
 import com.chinacreator.panel.SocketPanel;
 import com.chinacreator.service.PropFileService;
 
@@ -43,6 +46,10 @@ public class FileMenu {
 		menuFileAdd.add(initFileAddPostItem(tabbedPane));
 		//添加【get请求子菜单】
 		menuFileAdd.add(initFileAddGetItem(tabbedPane));
+		//添加【put请求子菜单】
+		menuFileAdd.add(initFileAddPutItem(tabbedPane));
+		//添加【delete请求子菜单】
+		menuFileAdd.add(initFileAddDeleteItem(tabbedPane));
 		//添加【oracle数据导入子菜单】
 		menuFileAdd.add(initFileAddOracleDataInputItem(tabbedPane));
 		//添加【MD5加密子菜单】
@@ -74,7 +81,7 @@ public class FileMenu {
 		});
 		return fileAddPost;
 	}
-	
+
 	/**
 	 * @Description 
 		初始化文件菜单中的【添加模块】的子菜单【get请求】
@@ -92,6 +99,42 @@ public class FileMenu {
 			}
 		});
 		return fileAddGet;
+	}
+	/**
+	 * @Description 
+		初始化文件菜单中的【添加模块】的子菜单【put请求】
+	 * @Author qiang.zhu
+	 * @param tabbedPane 主tab页控件
+	 * @return JMenu put请求菜单项
+	 */
+	private JMenuItem initFileAddPutItem(final JTabbedPane tabbedPane){
+		JMenuItem fileAddPut=new JMenuItem("put请求");
+		fileAddPut.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//初始化put请求模块界面
+				new PutPanel().createPutJPanel(tabbedPane, "put请求");
+			}
+		});
+		return fileAddPut;
+	}
+	/**
+	 * @Description 
+		初始化文件菜单中的【添加模块】的子菜单【delete请求】
+	 * @Author qiang.zhu
+	 * @param tabbedPane 主tab页控件
+	 * @return JMenu delete请求菜单项
+	 */
+	private JMenuItem initFileAddDeleteItem(final JTabbedPane tabbedPane){
+		JMenuItem fileAddDelete=new JMenuItem("delete请求");
+		fileAddDelete.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//初始化delete请求模块界面
+				new DeletePanel().createDeleteJPanel(tabbedPane, "delete请求");
+			}
+		});
+		return fileAddDelete;
 	}
 	
 	/**
@@ -190,6 +233,10 @@ public class FileMenu {
 		        		new PostPanel().createPostJPanel(tabbedPane, "post请求", map.get("textUrl")==null?"":map.get("textUrl").toString(), map.get("textParam")==null?"":map.get("textParam").toString(), map.get("textProp")==null?"":map.get("textProp").toString());
 		        	}else if("GetPanel".equals(panelId)){
 		        		new GetPanel().createGetJPanel(tabbedPane, "get请求", map.get("textUrl")==null?"":map.get("textUrl").toString(), map.get("textParam")==null?"":map.get("textParam").toString(), map.get("textProp")==null?"":map.get("textProp").toString());
+		        	}else if("PutPanel".equals(panelId)){
+		        		new PutPanel().createPutJPanel(tabbedPane, "put请求", map.get("textUrl")==null?"":map.get("textUrl").toString(), map.get("textParam")==null?"":map.get("textParam").toString(), map.get("textProp")==null?"":map.get("textProp").toString());
+		        	}else if("DeletePanel".equals(panelId)){
+		        		new DeletePanel().createDeleteJPanel(tabbedPane, "delete请求", map.get("textUrl")==null?"":map.get("textUrl").toString(), map.get("textParam")==null?"":map.get("textParam").toString(), map.get("textProp")==null?"":map.get("textProp").toString());
 		        	}else if("OracleDataInputPanel".equals(panelId)){
 		        		new OracleDataInputPanel().createOracleDataInputJPanel(tabbedPane, "oracle数据导入", map.get("textUrl")==null?"":map.get("textUrl").toString(), map.get("textParam")==null?"":map.get("textParam").toString());
 		        	}else if("MD5Panel".equals(panelId)){
