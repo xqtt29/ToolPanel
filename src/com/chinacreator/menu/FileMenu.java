@@ -15,6 +15,7 @@ import com.chinacreator.panel.GetPanel;
 import com.chinacreator.panel.MD5Panel;
 import com.chinacreator.panel.OracleDataInputPanel;
 import com.chinacreator.panel.PostPanel;
+import com.chinacreator.panel.PostPanel2;
 import com.chinacreator.panel.ProxyPanel;
 import com.chinacreator.panel.PutPanel;
 import com.chinacreator.panel.SocketPanel;
@@ -44,6 +45,8 @@ public class FileMenu {
 		JMenu menuFileAdd=new JMenu("添加模块");
 		//添加【post请求子菜单】
 		menuFileAdd.add(initFileAddPostItem(tabbedPane));
+		//添加【post2请求子菜单】
+		menuFileAdd.add(initFileAddPost2Item(tabbedPane));
 		//添加【get请求子菜单】
 		menuFileAdd.add(initFileAddGetItem(tabbedPane));
 		//添加【put请求子菜单】
@@ -77,6 +80,25 @@ public class FileMenu {
 			public void actionPerformed(ActionEvent e) {
 				//初始化post请求模块界面
 				new PostPanel().createPostJPanel(tabbedPane, "post请求");
+			}
+		});
+		return fileAddPost;
+	}
+
+	/**
+	 * @Description 
+		初始化文件菜单中的【添加模块】的子菜单【post请求2】
+	 * @Author qiang.zhu
+	 * @param tabbedPane 主tab页控件
+	 * @return JMenu post请求菜单子项
+	 */
+	private JMenuItem initFileAddPost2Item(final JTabbedPane tabbedPane){
+		JMenuItem fileAddPost=new JMenuItem("post请求2");
+		fileAddPost.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//初始化post请求模块界面
+				new PostPanel2().createPostJPanel(tabbedPane, "post请求2");
 			}
 		});
 		return fileAddPost;
@@ -231,6 +253,8 @@ public class FileMenu {
 		        	String panelId=map.get("panelId")==null?"":map.get("panelId").toString();
 		        	if("PostPanel".equals(panelId)){
 		        		new PostPanel().createPostJPanel(tabbedPane, "post请求", map.get("textUrl")==null?"":map.get("textUrl").toString(), map.get("textParam")==null?"":map.get("textParam").toString(), map.get("textProp")==null?"":map.get("textProp").toString());
+		        	}else if("PostPanel2".equals(panelId)){
+		        		new PostPanel2().createPostJPanel(tabbedPane, "post请求2", map.get("textUrl")==null?"":map.get("textUrl").toString(), map.get("textParam")==null?"":map.get("textParam").toString(), map.get("textProp")==null?"":map.get("textProp").toString());
 		        	}else if("GetPanel".equals(panelId)){
 		        		new GetPanel().createGetJPanel(tabbedPane, "get请求", map.get("textUrl")==null?"":map.get("textUrl").toString(), map.get("textParam")==null?"":map.get("textParam").toString(), map.get("textProp")==null?"":map.get("textProp").toString());
 		        	}else if("PutPanel".equals(panelId)){
