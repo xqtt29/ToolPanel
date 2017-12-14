@@ -1,18 +1,23 @@
 package com.chinacreator.Action;
 
+import java.awt.Desktop;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -86,8 +91,18 @@ public class PostAction implements ActionListener{
 					//如果是验证码图片，则在控件中显示验证码图片
 					if(result.get("yzpic")!=null){
 						final BufferedImage bi=(BufferedImage)result.get("yzpic");
+						try {
+							String fileName = System.getProperty("user.dir")+File.separator+"temp.png";
+							ImageIO.write(bi, "PNG", new File(fileName));
+							Desktop.getDesktop().open(new File(fileName));
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						/*
 						ImageIcon ii=new ImageIcon((Image)bi);
 						labPic.setIcon(ii);
+						*/
 						result.remove("yzpic");
 					}
 					//在输出控件上输出get请求结果
